@@ -47,4 +47,12 @@ app.post("/users", (request, response) => {
   return response.status(201).json(user);
 });
 
+app.get("/todos", checkUserAccountExists, (request, response) => {
+  const {
+    user: { todos },
+  } = request;
+
+  return response.status(200).json(todos);
+});
+
 module.exports = app;
