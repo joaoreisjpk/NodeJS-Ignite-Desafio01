@@ -1,41 +1,36 @@
-const express = require('express');
-const cors = require('cors');
+const express = require("express");
+const cors = require("cors");
 
-// const { v4: uuidv4 } = require('uuid');
+const { v4: uuid } = require("uuid");
 
 const app = express();
 
 app.use(cors());
 app.use(express.json());
 
-// const users = [];
+const users = [];
 
-function checksExistsUserAccount(request, response, next) {
-  // Complete aqui
-}
+app.post("/users", (request, response) => {
+  const {
+    body: { name, username },
+  } = request;
 
-app.post('/users', (request, response) => {
-  // Complete aqui
-});
+  const userAlreadyExists = users.some((user) => user.username === username);
 
-app.get('/todos', checksExistsUserAccount, (request, response) => {
-  // Complete aqui
-});
+  if (userAlreadyExists) {
+    return response.status(400).json({ error: "User already exists" });
+  }
 
-app.post('/todos', checksExistsUserAccount, (request, response) => {
-  // Complete aqui
-});
+  const user = {
+    id: uuid(),
+    name,
+    username,
+    todos: [],
+  };
 
-app.put('/todos/:id', checksExistsUserAccount, (request, response) => {
-  // Complete aqui
-});
+  users.push(user);
 
-app.patch('/todos/:id/done', checksExistsUserAccount, (request, response) => {
-  // Complete aqui
-});
-
-app.delete('/todos/:id', checksExistsUserAccount, (request, response) => {
-  // Complete aqui
+  return response.status(201).json(user);
 });
 
 module.exports = app;
