@@ -55,4 +55,23 @@ app.get("/todos", checkUserAccountExists, (request, response) => {
   return response.status(200).json(todos);
 });
 
+app.post("/todos", checkUserAccountExists, (request, response) => {
+  const {
+    user,
+    body: { title, deadline },
+  } = request;
+
+  const todo = {
+    id: uuid(),
+    title,
+    done: false,
+    deadline: new Date(deadline),
+    created_at: new Date(),
+  };
+
+  user.todos.push(todo);
+
+  return response.status(201).json(todo);
+});
+
 module.exports = app;
