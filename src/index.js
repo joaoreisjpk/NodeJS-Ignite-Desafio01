@@ -108,4 +108,17 @@ app.put(
   }
 );
 
+app.patch(
+  "/todos/:id/done",
+  checkUserAccountExists,
+  checkTodoExists,
+  (request, response) => {
+    const { todo } = request;
+
+    todo.done = true;
+
+    return response.status(201).json(todo);
+  }
+);
+
 module.exports = app;
