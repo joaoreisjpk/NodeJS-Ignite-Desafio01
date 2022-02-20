@@ -91,4 +91,21 @@ app.post("/todos", checkUserAccountExists, (request, response) => {
   return response.status(201).json(todo);
 });
 
+app.put(
+  "/todos/:id",
+  checkUserAccountExists,
+  checkTodoExists,
+  (request, response) => {
+    const {
+      todo,
+      body: { title, deadline },
+    } = request;
+
+    todo.title = title;
+    todo.deadline = deadline;
+
+    return response.status(201).json(todo);
+  }
+);
+
 module.exports = app;
