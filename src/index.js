@@ -121,4 +121,17 @@ app.patch(
   }
 );
 
+app.delete(
+  "/todos/:id",
+  checkUserAccountExists,
+  checkTodoExists,
+  (request, response) => {
+    const { user, todo } = request;
+
+    user.todos.splice(todo.id, 1);
+
+    return response.status(204).json(user.todos);
+  }
+);
+
 module.exports = app;
